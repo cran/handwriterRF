@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>handwriterRF</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">handwriterRF</h1>
+
+
+
+<div id="writer-ids" class="section level2">
+<h2>Writer IDs</h2>
+<p>The CSAFE Handwriting Database assigned unique IDs to its writers
+where the IDs start with the letter “w” are are followed by a four digit
+number. The smallest ID number is 1 and the largest is 720, but some IDs
+in that range are not used. The ID numbers are padded on the left with
+zeros to make them four digits in length. E.g. the first writer ID is
+“w0001” and the last is “w0720.” In the implementation of the method we
+will use the CSAFE writer ID to more easily track the true writer of a
+handwriting sample. However, for ease in notation we will denote the set
+of writers in an experiment as <span class="math inline">\(\{w_1,w_2,...,w_n\}\)</span> where <span class="math inline">\(n\)</span> is the total number of writers.</p>
+<p>In an abuse of notation, instead of denoting a specific writer as
+<span class="math inline">\(w_i\)</span> for some <span class="math inline">\(i \in \{1,2,...n\}\)</span> we will omit the
+subscript and denote a given writer as <span class="math inline">\(w \in
+\{w_1, w_2, ..., w_n\}\)</span>. To refer to two distinct writers we we
+use <span class="math inline">\(w\)</span> and <span class="math inline">\(w&#39;\)</span></p>
+</div>
+<div id="handwriting-samples" class="section level2">
+<h2>Handwriting Samples</h2>
+<p>Each writer <span class="math inline">\(w_i\)</span> in the CSAFE
+Handwriting Database produced twenty-seven handwriting samples over
+three writing sessions <span class="math inline">\({s_1, s_2,
+s_3}\)</span>. A specific session is denoted <span class="math inline">\(s \in \{s_1, s_2, s_3\}\)</span> and two distinct
+session are denoted <span class="math inline">\(s\)</span> and <span class="math inline">\(s&#39;\)</span>.</p>
+<p>During each writing session, each writer copied three prompts: <span class="math inline">\(p \in \{L, P, W\}\)</span> where <span class="math inline">\(L\)</span> refers to the London Letter prompt,
+<span class="math inline">\(P\)</span> refers to the common phrase
+prompt, and <span class="math inline">\(W\)</span> refers to the Wizard
+of Oz prompt.</p>
+<p>During each writing session, each writer produced three repetitions
+of each of the three prompts, for a total of nine samples per session. A
+specific repetition is denoted <span class="math inline">\(r \in \{r_1,
+r_2, r_3\}\)</span> and two distinct repetitions are denoted <span class="math inline">\(r\)</span> and <span class="math inline">\(r&#39;\)</span>.</p>
+<p>We create a fourth pseudo prompt <span class="math inline">\(C\)</span> by combining the prompts <span class="math inline">\(L\)</span>, <span class="math inline">\(P\)</span>, and <span class="math inline">\(W\)</span> from a specific writer, session, and
+repetition. In other words, for writer <span class="math inline">\(w\)</span> we create a pseudo prompt <span class="math inline">\(C\)</span> by combining the <span class="math inline">\(L\)</span>, <span class="math inline">\(P\)</span>, and <span class="math inline">\(W\)</span> prompts from the first session and
+first repetition. Each writer has three <span class="math inline">\(C\)</span> prompts per session for a total of nine
+<span class="math inline">\(C\)</span> prompts.</p>
+</div>
+<div id="training-and-testing-sets" class="section level2">
+<h2>Training and Testing Sets</h2>
+<p>Randomly assign writers to either the training or testing set. Mattie
+assigned 72 writers (80% of 90) to the training set and 18 writers (20%
+of 90) to the test set. Let <span class="math inline">\(n_{train}\)</span> and <span class="math inline">\(n_{test}\)</span> be the number of writers in the
+training and testing sets, respectively.</p>
+<p>For the <span class="math inline">\(n_{train}\)</span> writers in the
+training set, choose a session <span class="math inline">\(s \in \{s_1,
+s_2, s_3\}\)</span> and split the writers’ handwriting samples into four
+subsets based on the prompt <span class="math inline">\(p \in \{L, P, W,
+C\}\)</span>. Each writer has three repetitions of each of the four
+prompts for the given session for a total of twelve handwriting
+samples.</p>
+</div>
+<div id="features" class="section level2">
+<h2>Features</h2>
+<p>We use the cluster fill rates obtained with the ‘handwriter’ R
+package as document-level features.</p>
+</div>
+<div id="calculate-distances" class="section level2">
+<h2>Calculate Distances</h2>
+<p>Let <span class="math inline">\(x \in \mathbb{R}^{40}\)</span> and
+<span class="math inline">\(y \mathbb{R}^{40}\)</span> be the cluster
+fill rates for <span class="math inline">\(doc_x\)</span> and <span class="math inline">\(doc_y\)</span>, respectively.</p>
+<p>Distance measures:</p>
+<ul>
+<li>Manhattan distance (the norm induced metric of the <span class="math inline">\(\ell^1\)</span>-norm): <span class="math inline">\(d_A(x,y) = \sum_{i=1}^{40}|x_i -
+y_i|\)</span></li>
+<li>Euclidean distance (the norm induced metric of the <span class="math inline">\(\ell^2\)</span>-norm): <span class="math inline">\(d_E(x,y) = \sqrt{x^Ty}\)</span></li>
+<li>Cosine similarity: <span class="math inline">\(d_C(x,y) =
+\frac{x^Ty}{||x||_2 ||y||2}\)</span> where <span class="math inline">\(||x||_2 = \sqrt{x^Tx}\)</span> and <span class="math inline">\(||y||_2 = \sqrt{y^Ty}\)</span>. Note that <span class="math inline">\(d_C(\cdot, \cdot)\)</span> is not a metric.</li>
+</ul>
+<p>Concatenate distance measures: <span class="math inline">\(d(x,y) =
+d_A(x,y) +\!\!\!+ d_E(x,y) \in \mathbb{R}^2\)</span> where <span class="math inline">\(+\!\!\!+\)</span> denotes vector
+concatenation.</p>
+</div>
+<div id="train-a-random-forest" class="section level2">
+<h2>Train a Random Forest</h2>
+<p>Calculate distances between known matching (KM) and known
+non-matching (KNM) pairs for the common source SLR.</p>
+<p>Let <span class="math inline">\(D_{KM}\)</span> and <span class="math inline">\(D_{KNM}\)</span> be the sets of known matching and
+known non-matching scores, respectively.</p>
+<p>Train a random forest <span class="math inline">\(rf(D_{KM},
+D_{KNM})\)</span></p>
+</div>
+<div id="calculate-similarity-scores" class="section level2">
+<h2>Calculate Similarity Scores</h2>
+<p>For a new pair, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, use the random forest to make
+predictions about <span class="math inline">\(d(x,y) = concat(d_A,
+d_E)\)</span>. Each decision tree in the random forest predicts
+“same-writer” or “different-writer” for the distance <span class="math inline">\(d\)</span>. A similarity score is the percentage
+of decision trees in the random forest that predict “same-writer.” The
+similarity score is a function that maps from <span class="math inline">\((\mathbb{R}^+)^{41} \to [0,1]\)</span>.</p>
+</div>
+<div id="kernel-density-estimation" class="section level2">
+<h2>Kernel Density Estimation</h2>
+<p>Use kernel density estimation to estimate the “same-writer” and
+“different-writer” score densities using the density function in R with
+a Gaussian kernel (default bandwidth) within the bounds <span class="math inline">\([0, 1]\)</span>.</p>
+</div>
+<div id="training-and-testing-sets-1" class="section level2">
+<h2>Training and Testing Sets</h2>
+<p>Split dataset: 80% training and 20% testing. Split by writers.</p>
+<div id="training-subsets" class="section level3">
+<h3>Training Subsets</h3>
+<p>Let <span class="math inline">\(p \subset {L, P, W, C}\)</span>
+denote a prompt where</p>
+<ul>
+<li><span class="math inline">\(L\)</span> is the London letter (3
+prompts per session <span class="math inline">\(s\)</span>)</li>
+<li><span class="math inline">\(P\)</span> is the common phrase (3
+prompts per session <span class="math inline">\(s\)</span>)</li>
+<li><span class="math inline">\(W\)</span> is the Wizard of Oz (3
+prompts per session <span class="math inline">\(s\)</span>)</li>
+<li><span class="math inline">\(C\)</span> is a pseudo document created
+by combining the three prompts from repetition <span class="math inline">\(r\)</span> of session <span class="math inline">\(s\)</span>. (3 prompts, or pseudo docs, per
+session <span class="math inline">\(s\)</span>)</li>
+</ul>
+<p>For prompt <span class="math inline">\(p\)</span>, session <span class="math inline">\(s\)</span>, and <span class="math inline">\(n_w\)</span> writers there are <span class="math inline">\(n_w {3 \choose 2} = 3 n_w\)</span> “same-writer”
+scores.</p>
+<p>For prompt <span class="math inline">\(p\)</span>, session <span class="math inline">\(s\)</span>, and <span class="math inline">\(n_w\)</span> writers there are <span class="math inline">\(9 {n_w \choose 2}\)</span> “different-writer”
+scores. Downsample the “different-writer” scores by randomly selecting a
+sample of <span class="math inline">\(3 n_w\)</span> scores.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
